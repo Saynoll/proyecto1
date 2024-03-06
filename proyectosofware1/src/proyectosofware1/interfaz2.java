@@ -1,0 +1,323 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package proyectosofware1;
+
+import com.sun.source.tree.BinaryTree;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+/**
+ *
+ * @author PC
+ */
+public class interfaz2 extends javax.swing.JFrame {
+
+    static interfaz2 newFrame;
+private ArrayList<Integer> numeros = new ArrayList<>();
+class TreeNode {
+    int dato;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int dato) {
+        this.dato = dato;
+        left = null;
+        right = null;
+    }
+}
+
+// Clase para el árbol binario
+class BinaryTree {
+    TreeNode ruta;
+
+    BinaryTree() {
+        ruta = null;
+    }
+
+    // Método para insertar un nodo en el árbol
+    void insert(int dato) {
+        ruta = insertRec(ruta,dato);
+    }
+
+    // Método auxiliar para insertar un nodo de manera recursiva
+    TreeNode insertRec(TreeNode ruta, int dato) {
+        if (ruta == null) {
+            ruta = new TreeNode(dato);
+            return ruta;
+        }
+
+        if (dato < ruta.dato)
+            ruta.left = insertRec(ruta.left, dato);
+        else if (dato > ruta.dato)
+            ruta.right = insertRec(ruta.right, dato);
+
+        return ruta;
+    }
+
+    // Método para recorrer el árbol en orden
+    void inOrderTraversal(TreeNode ruta, ArrayList<Integer> result) {
+        if (ruta != null) {
+            inOrderTraversal(ruta.left, result);
+            result.add(ruta.dato);
+            inOrderTraversal(ruta.right, result);
+        }
+    }
+}
+
+    /**
+     * Creates new form inteerfaz2
+     */
+    public interfaz2() {
+        initComponents();
+        
+        this.setTitle("Ordenador de numeros");
+        this.setLocationRelativeTo(interfaz2.this);
+        this.setResizable(false);
+       // this.setExtendedState(interfaz.MAXIMIZED_BOTH);
+        Image icono = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagen/icono.jpeg"));
+        this.setIconImage(icono);
+        
+    }
+    private void cargarArchivo() {
+    JFileChooser fileChooser = new JFileChooser();
+    int returnValue = fileChooser.showOpenDialog(null);
+    if (returnValue == JFileChooser.APPROVE_OPTION) {
+        File selectedFile = fileChooser.getSelectedFile();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(selectedFile));
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println("Número leído: " + line);
+                // Aquí puedes procesar cada línea del archivo
+                int number = Integer.parseInt(line.trim());
+                numeros.add(number);
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+private void organizarArbolBinario() {
+    // Implementa aquí el código para organizar los números usando árbol binario
+  if (!numeros.isEmpty()) {
+        // Creamos un árbol binario
+        BinaryTree tree = new BinaryTree();
+
+        // Insertamos los números en el árbol
+        for (int number : numeros) {
+            tree.insert(number);
+        }
+
+        // Recorremos el árbol en orden para obtener los números ordenados
+        ArrayList<Integer> sortedNumbers = new ArrayList<>();
+        tree.inOrderTraversal(tree.ruta, sortedNumbers);
+
+        // Creamos un nuevo archivo de texto para escribir los números ordenados
+        String outputFile = "numeros_ordenados.txt";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+            // Escribimos cada número ordenado en una línea del archivo
+            for (int number : sortedNumbers) {
+                writer.write(Integer.toString(number));
+                writer.newLine();
+            }
+            System.out.println("Números ordenados han sido escritos en el archivo: " + outputFile);
+            
+            // Abrimos el archivo con el programa predeterminado
+            File file = new File(outputFile);
+            Desktop desktop = Desktop.getDesktop();
+            desktop.open(file);
+        } catch (IOException e) {
+            System.err.println("Error al escribir el archivo: " + e.getMessage());
+        }
+    } else {
+        System.out.println("No se han cargado números.");
+    }
+}
+private void organizarArbolBinarioSinSort() {
+  
+    // Implementa aquí el código para organizar los números sin usar sort()
+}
+   
+
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jButton1.setText("Volver");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Elige el archivo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Ordenar de menor a mayor");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Ordenar de mayor a menor");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Ordenamiento por arbol binario");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(91, 91, 91)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addContainerGap(136, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel1)
+                .addGap(36, 36, 36)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addGap(28, 28, 28)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+ interfaz newframemain = new interfaz();
+
+newframemain.setVisible(true);    
+this.dispose();
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+jButton2.setText("Cargar Archivo");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            cargarArchivo();
+        }
+    });        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+ jButton3.setText("Ordenar de menor a mayor");
+    jButton3.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            organizarArbolBinario();
+        }
+    });
+    
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+jButton4.setText("Ordenar de mayor a menor");
+    jButton4.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            organizarArbolBinarioSinSort();
+        }
+    });        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(interfaz2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(interfaz2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(interfaz2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(interfaz2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new interfaz2().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
+    // End of variables declaration//GEN-END:variables
+}
